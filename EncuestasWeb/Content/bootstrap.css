@@ -4171,7 +4171,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   position: fixed;
   right: 0;
   left: 0;
-  border-width: 0 0 1px;
+  border-width: 0 0 0px;
 }
 
 @media (min-width: 768px) {
@@ -4384,7 +4384,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-default {
-  background-color: #f8f8f8;
+  background-color: #d9534f;
   border-color: #e7e7e7;
 }
 
@@ -4441,7 +4441,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-default .navbar-collapse,
 .navbar-default .navbar-form {
-  border-color: #e6e6e6;
+  border-color: #ffffff;
 }
 
 .navbar-default .navbar-nav > .dropdown > a:hover .caret,
@@ -4506,7 +4506,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse .navbar-brand {
-  color: #999999;
+  color: #ffffff;
 }
 
 .navbar-inverse .navbar-brand:hover,
@@ -4520,7 +4520,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse .navbar-nav > li > a {
-  color: #999999;
+  color: #ffffff;
 }
 
 .navbar-inverse .navbar-nav > li > a:hover,
@@ -4544,12 +4544,12 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse .navbar-toggle {
-  border-color: #333333;
+  border-color: #d9534f;
 }
 
 .navbar-inverse .navbar-toggle:hover,
 .navbar-inverse .navbar-toggle:focus {
-  background-color: #333333;
+  background-color: #ff605b;
 }
 
 .navbar-inverse .navbar-toggle .icon-bar {
@@ -4558,7 +4558,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-inverse .navbar-collapse,
 .navbar-inverse .navbar-form {
-  border-color: #101010;
+  border-color: #d9534f;
 }
 
 .navbar-inverse .navbar-nav > .open > a,
@@ -4574,8 +4574,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse .navbar-nav > .dropdown > a .caret {
-  border-top-color: #999999;
-  border-bottom-color: #999999;
+  border-top-color: #d9534f;
+  border-bottom-color: #d9534f;
 }
 
 .navbar-inverse .navbar-nav > .open > a .caret,
@@ -4587,7 +4587,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 @media (max-width: 767px) {
   .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
-    border-color: #080808;
+    border-color: #d9534f;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
     color: #999999;

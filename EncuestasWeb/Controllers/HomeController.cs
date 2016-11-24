@@ -15,7 +15,7 @@ namespace EncuestasWeb.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Encuestas UPC";
 
             return View();
         }
