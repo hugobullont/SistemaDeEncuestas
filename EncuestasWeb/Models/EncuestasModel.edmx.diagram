@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2b32d4ff79ac4333a4f1d4b3be815df2" Name="Diagram1">
+        <EntityTypeShape EntityType="EncuestasUPCModel.Categoria" Width="1.5" PointX="1.5" PointY="22.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.DocumentosDigitale" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.Encuesta" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.Grupo" Width="1.5" PointX="0.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.Indicadore" Width="1.5" PointX="0.75" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.Pregunta" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.PreguntasXEncuesta" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.Respuesta" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.RespuestasXPreguntasXEncuesta" Width="1.5" PointX="7.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.Subtipo" Width="1.5" PointX="0.75" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.TipoDocumentoDigital" Width="1.5" PointX="1.5" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.Tipos" Width="1.5" PointX="1.5" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EncuestasUPCModel.Usuario" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_Tipos_Categorias" ManuallyRouted="false" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_DocumentosDigitales_TipoDocumentoDigital" ManuallyRouted="false" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_Encuesta_DocumentosDigitales" ManuallyRouted="false" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_Encuesta_Grupo" ManuallyRouted="false" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_Encuesta_Indicadores" ManuallyRouted="false" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_Encuesta_Subtipo" ManuallyRouted="false" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_PreguntasXEncuesta_Encuesta" ManuallyRouted="false" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_Usuarios_Grupo" ManuallyRouted="false" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_PreguntasXEncuesta_Preguntas" ManuallyRouted="false" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_RespuestasXPreguntasXEncuesta_PreguntasXEncuesta" ManuallyRouted="false" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_RespuestasXPreguntasXEncuesta_Respuestas" ManuallyRouted="false" />
+        <AssociationConnector Association="EncuestasUPCModel.FK_Subtipo_Tipos" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
