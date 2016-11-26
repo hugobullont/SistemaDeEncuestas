@@ -21,29 +21,34 @@ namespace EncuestasWeb.Controllers
             return View(usuarios.ToList());
         }
 
+        public ActionResult Login()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(string username, string password)
+        public ActionResult Login([Bind(Include = "Id,codigo,Nombre,GrupoId,ApellidoPaterno,ApellidoMaterno,contraseña")] Usuario usuario)
         {
-            Usuario user = GetUserByUsername(username);
+            Usuario user = GetUserByUsername(usuario.codigo);
             if (user==null)
             {
                 return HttpNotFound();
             }
-            if (user.contraseña == password)
+            if (user.contraseña == usuario.contraseña)
             {
                 switch(user.Grupo.nombreGrupo)
                 {
                     case "Analista":
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Home/Analista", new { Id = user.Id });
                     case "Administrador":
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Home/Administrador", new { Id = user.Id });
                     case "Alumno":
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Home/Alumno", new { Id = user.Id });
                     case "Docente":
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Home/Docente", new { Id = user.Id });
                     case "Administrativo":
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Home/Administrativo", new { Id = user.Id });
                 }
                           
                 

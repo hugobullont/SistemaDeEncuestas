@@ -1,0 +1,56 @@
+﻿@model EncuestasWeb.Models.Encuesta
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Encuesta</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentosDigitale.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentosDigitale.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Grupo.nombreGrupo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Grupo.nombreGrupo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Indicadore.valorIndicador)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Indicadore.valorIndicador)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subtipo.NombreSubtipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subtipo.NombreSubtipo)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

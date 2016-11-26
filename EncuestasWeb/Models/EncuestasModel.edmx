@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EncuestasUPCModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EncuestasUPCModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Categorias">
           <Key>
             <PropertyRef Name="id" />
@@ -43,6 +43,14 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="valorIndicador" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Opciones">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Valor" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IdPregunta" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Preguntas">
           <Key>
@@ -169,6 +177,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Opciones_Preguntas">
+          <End Role="Preguntas" Type="Self.Preguntas" Multiplicity="1" />
+          <End Role="Opciones" Type="Self.Opciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Preguntas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Opciones">
+              <PropertyRef Name="IdPregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PreguntasXEncuesta_Encuesta">
           <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="1" />
           <End Role="PreguntasXEncuesta" Type="Self.PreguntasXEncuesta" Multiplicity="*" />
@@ -259,6 +279,7 @@
           <EntitySet Name="Encuesta" EntityType="Self.Encuesta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Grupo" EntityType="Self.Grupo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Indicadores" EntityType="Self.Indicadores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Opciones" EntityType="Self.Opciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Preguntas" EntityType="Self.Preguntas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PreguntasXEncuesta" EntityType="Self.PreguntasXEncuesta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Respuestas" EntityType="Self.Respuestas" Schema="dbo" store:Type="Tables" />
@@ -287,6 +308,10 @@
             <End Role="Subtipo" EntitySet="Subtipo" />
             <End Role="Encuesta" EntitySet="Encuesta" />
           </AssociationSet>
+          <AssociationSet Name="FK_Opciones_Preguntas" Association="Self.FK_Opciones_Preguntas">
+            <End Role="Preguntas" EntitySet="Preguntas" />
+            <End Role="Opciones" EntitySet="Opciones" />
+          </AssociationSet>
           <AssociationSet Name="FK_PreguntasXEncuesta_Encuesta" Association="Self.FK_PreguntasXEncuesta_Encuesta">
             <End Role="Encuesta" EntitySet="Encuesta" />
             <End Role="PreguntasXEncuesta" EntitySet="PreguntasXEncuesta" />
@@ -316,18 +341,95 @@
             <End Role="Usuarios" EntitySet="Usuarios" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EncuestasUPCModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Subtipo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreSubtipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TipoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Encuestas" Relationship="EncuestasUPCModel.FK_Encuesta_Subtipo" FromRole="Subtipo" ToRole="Encuesta" />
+          <NavigationProperty Name="Tipos" Relationship="EncuestasUPCModel.FK_Subtipo_Tipos" FromRole="Subtipo" ToRole="Tipos" />
+          </EntityType>
+        <EntityContainer Name="EncuestasUPCEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Subtipoes" EntityType="Self.Subtipo" />
+          <EntitySet Name="Categorias" EntityType="EncuestasUPCModel.Categoria" />
+          <EntitySet Name="DocumentosDigitales" EntityType="EncuestasUPCModel.DocumentosDigitale" />
+          <EntitySet Name="Encuestas" EntityType="EncuestasUPCModel.Encuesta" />
+          <EntitySet Name="Grupoes" EntityType="EncuestasUPCModel.Grupo" />
+          <EntitySet Name="Indicadores" EntityType="EncuestasUPCModel.Indicadore" />
+          <EntitySet Name="Opciones" EntityType="EncuestasUPCModel.Opcione" />
+          <EntitySet Name="Preguntas" EntityType="EncuestasUPCModel.Pregunta" />
+          <EntitySet Name="PreguntasXEncuestas" EntityType="EncuestasUPCModel.PreguntasXEncuesta" />
+          <EntitySet Name="Respuestas" EntityType="EncuestasUPCModel.Respuesta" />
+          <EntitySet Name="RespuestasXPreguntasXEncuestas" EntityType="EncuestasUPCModel.RespuestasXPreguntasXEncuesta" />
+          <EntitySet Name="TipoDocumentoDigitals" EntityType="EncuestasUPCModel.TipoDocumentoDigital" />
+          <EntitySet Name="Tipos" EntityType="EncuestasUPCModel.Tipos" />
+          <EntitySet Name="Usuarios" EntityType="EncuestasUPCModel.Usuario" />
+          <AssociationSet Name="FK_Tipos_Categorias" Association="EncuestasUPCModel.FK_Tipos_Categorias">
+            <End Role="Categoria" EntitySet="Categorias" />
+            <End Role="Tipos" EntitySet="Tipos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentosDigitales_TipoDocumentoDigital" Association="EncuestasUPCModel.FK_DocumentosDigitales_TipoDocumentoDigital">
+            <End Role="TipoDocumentoDigital" EntitySet="TipoDocumentoDigitals" />
+            <End Role="DocumentosDigitale" EntitySet="DocumentosDigitales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Encuesta_DocumentosDigitales" Association="EncuestasUPCModel.FK_Encuesta_DocumentosDigitales">
+            <End Role="DocumentosDigitale" EntitySet="DocumentosDigitales" />
+            <End Role="Encuesta" EntitySet="Encuestas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Encuesta_Grupo" Association="EncuestasUPCModel.FK_Encuesta_Grupo">
+            <End Role="Grupo" EntitySet="Grupoes" />
+            <End Role="Encuesta" EntitySet="Encuestas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Encuesta_Indicadores" Association="EncuestasUPCModel.FK_Encuesta_Indicadores">
+            <End Role="Indicadore" EntitySet="Indicadores" />
+            <End Role="Encuesta" EntitySet="Encuestas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Encuesta_Subtipo" Association="EncuestasUPCModel.FK_Encuesta_Subtipo">
+            <End Role="Subtipo" EntitySet="Subtipoes" />
+            <End Role="Encuesta" EntitySet="Encuestas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PreguntasXEncuesta_Encuesta" Association="EncuestasUPCModel.FK_PreguntasXEncuesta_Encuesta">
+            <End Role="Encuesta" EntitySet="Encuestas" />
+            <End Role="PreguntasXEncuesta" EntitySet="PreguntasXEncuestas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_Grupo" Association="EncuestasUPCModel.FK_Usuarios_Grupo">
+            <End Role="Grupo" EntitySet="Grupoes" />
+            <End Role="Usuario" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Opciones_Preguntas" Association="EncuestasUPCModel.FK_Opciones_Preguntas">
+            <End Role="Pregunta" EntitySet="Preguntas" />
+            <End Role="Opcione" EntitySet="Opciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PreguntasXEncuesta_Preguntas" Association="EncuestasUPCModel.FK_PreguntasXEncuesta_Preguntas">
+            <End Role="Pregunta" EntitySet="Preguntas" />
+            <End Role="PreguntasXEncuesta" EntitySet="PreguntasXEncuestas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RespuestasXPreguntasXEncuesta_PreguntasXEncuesta" Association="EncuestasUPCModel.FK_RespuestasXPreguntasXEncuesta_PreguntasXEncuesta">
+            <End Role="PreguntasXEncuesta" EntitySet="PreguntasXEncuestas" />
+            <End Role="RespuestasXPreguntasXEncuesta" EntitySet="RespuestasXPreguntasXEncuestas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RespuestasXPreguntasXEncuesta_Respuestas" Association="EncuestasUPCModel.FK_RespuestasXPreguntasXEncuesta_Respuestas">
+            <End Role="Respuesta" EntitySet="Respuestas" />
+            <End Role="RespuestasXPreguntasXEncuesta" EntitySet="RespuestasXPreguntasXEncuestas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subtipo_Tipos" Association="EncuestasUPCModel.FK_Subtipo_Tipos">
+            <End Role="Tipos" EntitySet="Tipos" />
+            <End Role="Subtipo" EntitySet="Subtipoes" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="Categoria">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NombreCategoria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Tipos" Relationship="Self.FK_Tipos_Categorias" FromRole="Categorias" ToRole="Tipos" />
+          <Property Name="NombreCategoria" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tipos" Relationship="EncuestasUPCModel.FK_Tipos_Categorias" FromRole="Categoria" ToRole="Tipos" />
         </EntityType>
         <EntityType Name="DocumentosDigitale">
           <Key>
@@ -335,9 +437,9 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TipoId" Type="Int32" Nullable="false" />
-          <Property Name="Descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="TipoDocumentoDigital" Relationship="Self.FK_DocumentosDigitales_TipoDocumentoDigital" FromRole="DocumentosDigitales" ToRole="TipoDocumentoDigital" />
-          <NavigationProperty Name="Encuestas" Relationship="Self.FK_Encuesta_DocumentosDigitales" FromRole="DocumentosDigitales" ToRole="Encuesta" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TipoDocumentoDigital" Relationship="EncuestasUPCModel.FK_DocumentosDigitales_TipoDocumentoDigital" FromRole="DocumentosDigitale" ToRole="TipoDocumentoDigital" />
+          <NavigationProperty Name="Encuestas" Relationship="EncuestasUPCModel.FK_Encuesta_DocumentosDigitales" FromRole="DocumentosDigitale" ToRole="Encuesta" />
         </EntityType>
         <EntityType Name="Encuesta">
           <Key>
@@ -348,36 +450,46 @@
           <Property Name="IndicadorId" Type="Int32" />
           <Property Name="DocumentosDigId" Type="Int32" Nullable="false" />
           <Property Name="SubtipoId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="DocumentosDigitale" Relationship="Self.FK_Encuesta_DocumentosDigitales" FromRole="Encuesta" ToRole="DocumentosDigitales" />
-          <NavigationProperty Name="Grupo" Relationship="Self.FK_Encuesta_Grupo" FromRole="Encuesta" ToRole="Grupo" />
-          <NavigationProperty Name="Indicadore" Relationship="Self.FK_Encuesta_Indicadores" FromRole="Encuesta" ToRole="Indicadores" />
-          <NavigationProperty Name="Subtipo" Relationship="Self.FK_Encuesta_Subtipo" FromRole="Encuesta" ToRole="Subtipo" />
-          <NavigationProperty Name="PreguntasXEncuestas" Relationship="Self.FK_PreguntasXEncuesta_Encuesta" FromRole="Encuesta" ToRole="PreguntasXEncuesta" />
+          <NavigationProperty Name="DocumentosDigitale" Relationship="EncuestasUPCModel.FK_Encuesta_DocumentosDigitales" FromRole="Encuesta" ToRole="DocumentosDigitale" />
+          <NavigationProperty Name="Grupo" Relationship="EncuestasUPCModel.FK_Encuesta_Grupo" FromRole="Encuesta" ToRole="Grupo" />
+          <NavigationProperty Name="Indicadore" Relationship="EncuestasUPCModel.FK_Encuesta_Indicadores" FromRole="Encuesta" ToRole="Indicadore" />
+          <NavigationProperty Name="Subtipo" Relationship="EncuestasUPCModel.FK_Encuesta_Subtipo" FromRole="Encuesta" ToRole="Subtipo" />
+          <NavigationProperty Name="PreguntasXEncuestas" Relationship="EncuestasUPCModel.FK_PreguntasXEncuesta_Encuesta" FromRole="Encuesta" ToRole="PreguntasXEncuesta" />
         </EntityType>
         <EntityType Name="Grupo">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombreGrupo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Encuestas" Relationship="Self.FK_Encuesta_Grupo" FromRole="Grupo" ToRole="Encuesta" />
-          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuarios_Grupo" FromRole="Grupo" ToRole="Usuarios" />
+          <Property Name="nombreGrupo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Encuestas" Relationship="EncuestasUPCModel.FK_Encuesta_Grupo" FromRole="Grupo" ToRole="Encuesta" />
+          <NavigationProperty Name="Usuarios" Relationship="EncuestasUPCModel.FK_Usuarios_Grupo" FromRole="Grupo" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Indicadore">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="valorIndicador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Encuestas" Relationship="Self.FK_Encuesta_Indicadores" FromRole="Indicadores" ToRole="Encuesta" />
+          <Property Name="valorIndicador" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Encuestas" Relationship="EncuestasUPCModel.FK_Encuesta_Indicadores" FromRole="Indicadore" ToRole="Encuesta" />
+        </EntityType>
+        <EntityType Name="Opcione">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Valor" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdPregunta" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Pregunta" Relationship="EncuestasUPCModel.FK_Opciones_Preguntas" FromRole="Opcione" ToRole="Pregunta" />
         </EntityType>
         <EntityType Name="Pregunta">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="PreguntasXEncuestas" Relationship="Self.FK_PreguntasXEncuesta_Preguntas" FromRole="Preguntas" ToRole="PreguntasXEncuesta" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Opciones" Relationship="EncuestasUPCModel.FK_Opciones_Preguntas" FromRole="Pregunta" ToRole="Opcione" />
+          <NavigationProperty Name="PreguntasXEncuestas" Relationship="EncuestasUPCModel.FK_PreguntasXEncuesta_Preguntas" FromRole="Pregunta" ToRole="PreguntasXEncuesta" />
         </EntityType>
         <EntityType Name="PreguntasXEncuesta">
           <Key>
@@ -386,17 +498,17 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EncuestaId" Type="Int32" Nullable="false" />
           <Property Name="PreguntasId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Encuesta" Relationship="Self.FK_PreguntasXEncuesta_Encuesta" FromRole="PreguntasXEncuesta" ToRole="Encuesta" />
-          <NavigationProperty Name="Pregunta" Relationship="Self.FK_PreguntasXEncuesta_Preguntas" FromRole="PreguntasXEncuesta" ToRole="Preguntas" />
-          <NavigationProperty Name="RespuestasXPreguntasXEncuestas" Relationship="Self.FK_RespuestasXPreguntasXEncuesta_PreguntasXEncuesta" FromRole="PreguntasXEncuesta" ToRole="RespuestasXPreguntasXEncuesta" />
+          <NavigationProperty Name="Encuesta" Relationship="EncuestasUPCModel.FK_PreguntasXEncuesta_Encuesta" FromRole="PreguntasXEncuesta" ToRole="Encuesta" />
+          <NavigationProperty Name="Pregunta" Relationship="EncuestasUPCModel.FK_PreguntasXEncuesta_Preguntas" FromRole="PreguntasXEncuesta" ToRole="Pregunta" />
+          <NavigationProperty Name="RespuestasXPreguntasXEncuestas" Relationship="EncuestasUPCModel.FK_RespuestasXPreguntasXEncuesta_PreguntasXEncuesta" FromRole="PreguntasXEncuesta" ToRole="RespuestasXPreguntasXEncuesta" />
         </EntityType>
         <EntityType Name="Respuesta">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="valorRespuesta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="RespuestasXPreguntasXEncuestas" Relationship="Self.FK_RespuestasXPreguntasXEncuesta_Respuestas" FromRole="Respuestas" ToRole="RespuestasXPreguntasXEncuesta" />
+          <Property Name="valorRespuesta" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RespuestasXPreguntasXEncuestas" Relationship="EncuestasUPCModel.FK_RespuestasXPreguntasXEncuesta_Respuestas" FromRole="Respuesta" ToRole="RespuestasXPreguntasXEncuesta" />
         </EntityType>
         <EntityType Name="RespuestasXPreguntasXEncuesta">
           <Key>
@@ -405,55 +517,45 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PreguntaXEncuestaId" Type="Int32" Nullable="false" />
           <Property Name="RespuestaId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="PreguntasXEncuesta" Relationship="Self.FK_RespuestasXPreguntasXEncuesta_PreguntasXEncuesta" FromRole="RespuestasXPreguntasXEncuesta" ToRole="PreguntasXEncuesta" />
-          <NavigationProperty Name="Respuesta" Relationship="Self.FK_RespuestasXPreguntasXEncuesta_Respuestas" FromRole="RespuestasXPreguntasXEncuesta" ToRole="Respuestas" />
-        </EntityType>
-        <EntityType Name="Subtipo">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NombreSubtipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="TipoId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Encuestas" Relationship="Self.FK_Encuesta_Subtipo" FromRole="Subtipo" ToRole="Encuesta" />
-          <NavigationProperty Name="Tipos" Relationship="Self.FK_Subtipo_Tipos" FromRole="Subtipo" ToRole="Tipos" />
+          <NavigationProperty Name="PreguntasXEncuesta" Relationship="EncuestasUPCModel.FK_RespuestasXPreguntasXEncuesta_PreguntasXEncuesta" FromRole="RespuestasXPreguntasXEncuesta" ToRole="PreguntasXEncuesta" />
+          <NavigationProperty Name="Respuesta" Relationship="EncuestasUPCModel.FK_RespuestasXPreguntasXEncuesta_Respuestas" FromRole="RespuestasXPreguntasXEncuesta" ToRole="Respuesta" />
         </EntityType>
         <EntityType Name="TipoDocumentoDigital">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NombreTipoDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="DocumentosDigitales" Relationship="Self.FK_DocumentosDigitales_TipoDocumentoDigital" FromRole="TipoDocumentoDigital" ToRole="DocumentosDigitales" />
+          <Property Name="NombreTipoDoc" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DocumentosDigitales" Relationship="EncuestasUPCModel.FK_DocumentosDigitales_TipoDocumentoDigital" FromRole="TipoDocumentoDigital" ToRole="DocumentosDigitale" />
         </EntityType>
         <EntityType Name="Tipos">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NombreTipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NombreTipo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CategoriaId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Categoria" Relationship="Self.FK_Tipos_Categorias" FromRole="Tipos" ToRole="Categorias" />
-          <NavigationProperty Name="Subtipoes" Relationship="Self.FK_Subtipo_Tipos" FromRole="Tipos" ToRole="Subtipo" />
+          <NavigationProperty Name="Categoria" Relationship="EncuestasUPCModel.FK_Tipos_Categorias" FromRole="Tipos" ToRole="Categoria" />
+          <NavigationProperty Name="Subtipoes" Relationship="EncuestasUPCModel.FK_Subtipo_Tipos" FromRole="Tipos" ToRole="Subtipo" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="codigo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="codigo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="GrupoId" Type="Int32" Nullable="false" />
-          <Property Name="ApellidoPaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="contraseña" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Grupo" Relationship="Self.FK_Usuarios_Grupo" FromRole="Usuarios" ToRole="Grupo" />
+          <Property Name="ApellidoPaterno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="contraseña" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Grupo" Relationship="EncuestasUPCModel.FK_Usuarios_Grupo" FromRole="Usuario" ToRole="Grupo" />
         </EntityType>
         <Association Name="FK_Tipos_Categorias">
-          <End Role="Categorias" Type="Self.Categoria" Multiplicity="1" />
-          <End Role="Tipos" Type="Self.Tipos" Multiplicity="*" />
+          <End Type="EncuestasUPCModel.Categoria" Role="Categoria" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.Tipos" Role="Tipos" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Categorias">
+            <Principal Role="Categoria">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Tipos">
@@ -462,22 +564,22 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DocumentosDigitales_TipoDocumentoDigital">
-          <End Role="TipoDocumentoDigital" Type="Self.TipoDocumentoDigital" Multiplicity="1" />
-          <End Role="DocumentosDigitales" Type="Self.DocumentosDigitale" Multiplicity="*" />
+          <End Type="EncuestasUPCModel.TipoDocumentoDigital" Role="TipoDocumentoDigital" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.DocumentosDigitale" Role="DocumentosDigitale" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TipoDocumentoDigital">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="DocumentosDigitales">
+            <Dependent Role="DocumentosDigitale">
               <PropertyRef Name="TipoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Encuesta_DocumentosDigitales">
-          <End Role="DocumentosDigitales" Type="Self.DocumentosDigitale" Multiplicity="1" />
-          <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="*" />
+          <End Type="EncuestasUPCModel.DocumentosDigitale" Role="DocumentosDigitale" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.Encuesta" Role="Encuesta" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="DocumentosDigitales">
+            <Principal Role="DocumentosDigitale">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Encuesta">
@@ -486,8 +588,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Encuesta_Grupo">
-          <End Role="Grupo" Type="Self.Grupo" Multiplicity="1" />
-          <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="*" />
+          <End Type="EncuestasUPCModel.Grupo" Role="Grupo" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.Encuesta" Role="Encuesta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Grupo">
               <PropertyRef Name="id" />
@@ -498,10 +600,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Encuesta_Indicadores">
-          <End Role="Indicadores" Type="Self.Indicadore" Multiplicity="0..1" />
-          <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="*" />
+          <End Type="EncuestasUPCModel.Indicadore" Role="Indicadore" Multiplicity="0..1" />
+          <End Type="EncuestasUPCModel.Encuesta" Role="Encuesta" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Indicadores">
+            <Principal Role="Indicadore">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Encuesta">
@@ -510,8 +612,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Encuesta_Subtipo">
-          <End Role="Subtipo" Type="Self.Subtipo" Multiplicity="1" />
-          <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="*" />
+          <End Type="EncuestasUPCModel.Subtipo" Role="Subtipo" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.Encuesta" Role="Encuesta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Subtipo">
               <PropertyRef Name="id" />
@@ -522,8 +624,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PreguntasXEncuesta_Encuesta">
-          <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="1" />
-          <End Role="PreguntasXEncuesta" Type="Self.PreguntasXEncuesta" Multiplicity="*" />
+          <End Type="EncuestasUPCModel.Encuesta" Role="Encuesta" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.PreguntasXEncuesta" Role="PreguntasXEncuesta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Encuesta">
               <PropertyRef Name="id" />
@@ -534,22 +636,34 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Usuarios_Grupo">
-          <End Role="Grupo" Type="Self.Grupo" Multiplicity="1" />
-          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="*" />
+          <End Type="EncuestasUPCModel.Grupo" Role="Grupo" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.Usuario" Role="Usuario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Grupo">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="Usuarios">
+            <Dependent Role="Usuario">
               <PropertyRef Name="GrupoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PreguntasXEncuesta_Preguntas">
-          <End Role="Preguntas" Type="Self.Pregunta" Multiplicity="1" />
-          <End Role="PreguntasXEncuesta" Type="Self.PreguntasXEncuesta" Multiplicity="*" />
+        <Association Name="FK_Opciones_Preguntas">
+          <End Type="EncuestasUPCModel.Pregunta" Role="Pregunta" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.Opcione" Role="Opcione" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Preguntas">
+            <Principal Role="Pregunta">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Opcione">
+              <PropertyRef Name="IdPregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PreguntasXEncuesta_Preguntas">
+          <End Type="EncuestasUPCModel.Pregunta" Role="Pregunta" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.PreguntasXEncuesta" Role="PreguntasXEncuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pregunta">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="PreguntasXEncuesta">
@@ -558,8 +672,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RespuestasXPreguntasXEncuesta_PreguntasXEncuesta">
-          <End Role="PreguntasXEncuesta" Type="Self.PreguntasXEncuesta" Multiplicity="1" />
-          <End Role="RespuestasXPreguntasXEncuesta" Type="Self.RespuestasXPreguntasXEncuesta" Multiplicity="*" />
+          <End Type="EncuestasUPCModel.PreguntasXEncuesta" Role="PreguntasXEncuesta" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.RespuestasXPreguntasXEncuesta" Role="RespuestasXPreguntasXEncuesta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PreguntasXEncuesta">
               <PropertyRef Name="id" />
@@ -570,10 +684,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RespuestasXPreguntasXEncuesta_Respuestas">
-          <End Role="Respuestas" Type="Self.Respuesta" Multiplicity="1" />
-          <End Role="RespuestasXPreguntasXEncuesta" Type="Self.RespuestasXPreguntasXEncuesta" Multiplicity="*" />
+          <End Type="EncuestasUPCModel.Respuesta" Role="Respuesta" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.RespuestasXPreguntasXEncuesta" Role="RespuestasXPreguntasXEncuesta" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Respuestas">
+            <Principal Role="Respuesta">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="RespuestasXPreguntasXEncuesta">
@@ -582,8 +696,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Subtipo_Tipos">
-          <End Role="Tipos" Type="Self.Tipos" Multiplicity="1" />
-          <End Role="Subtipo" Type="Self.Subtipo" Multiplicity="*" />
+          <End Type="EncuestasUPCModel.Tipos" Role="Tipos" Multiplicity="1" />
+          <End Type="EncuestasUPCModel.Subtipo" Role="Subtipo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Tipos">
               <PropertyRef Name="id" />
@@ -593,153 +707,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="EncuestasUPCEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Categorias" EntityType="Self.Categoria" />
-          <EntitySet Name="DocumentosDigitales" EntityType="Self.DocumentosDigitale" />
-          <EntitySet Name="Encuestas" EntityType="Self.Encuesta" />
-          <EntitySet Name="Grupoes" EntityType="Self.Grupo" />
-          <EntitySet Name="Indicadores" EntityType="Self.Indicadore" />
-          <EntitySet Name="Preguntas" EntityType="Self.Pregunta" />
-          <EntitySet Name="PreguntasXEncuestas" EntityType="Self.PreguntasXEncuesta" />
-          <EntitySet Name="Respuestas" EntityType="Self.Respuesta" />
-          <EntitySet Name="RespuestasXPreguntasXEncuestas" EntityType="Self.RespuestasXPreguntasXEncuesta" />
-          <EntitySet Name="Subtipoes" EntityType="Self.Subtipo" />
-          <EntitySet Name="TipoDocumentoDigitals" EntityType="Self.TipoDocumentoDigital" />
-          <EntitySet Name="Tipos" EntityType="Self.Tipos" />
-          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
-          <AssociationSet Name="FK_Tipos_Categorias" Association="Self.FK_Tipos_Categorias">
-            <End Role="Categorias" EntitySet="Categorias" />
-            <End Role="Tipos" EntitySet="Tipos" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DocumentosDigitales_TipoDocumentoDigital" Association="Self.FK_DocumentosDigitales_TipoDocumentoDigital">
-            <End Role="TipoDocumentoDigital" EntitySet="TipoDocumentoDigitals" />
-            <End Role="DocumentosDigitales" EntitySet="DocumentosDigitales" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Encuesta_DocumentosDigitales" Association="Self.FK_Encuesta_DocumentosDigitales">
-            <End Role="DocumentosDigitales" EntitySet="DocumentosDigitales" />
-            <End Role="Encuesta" EntitySet="Encuestas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Encuesta_Grupo" Association="Self.FK_Encuesta_Grupo">
-            <End Role="Grupo" EntitySet="Grupoes" />
-            <End Role="Encuesta" EntitySet="Encuestas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Encuesta_Indicadores" Association="Self.FK_Encuesta_Indicadores">
-            <End Role="Indicadores" EntitySet="Indicadores" />
-            <End Role="Encuesta" EntitySet="Encuestas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Encuesta_Subtipo" Association="Self.FK_Encuesta_Subtipo">
-            <End Role="Subtipo" EntitySet="Subtipoes" />
-            <End Role="Encuesta" EntitySet="Encuestas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PreguntasXEncuesta_Encuesta" Association="Self.FK_PreguntasXEncuesta_Encuesta">
-            <End Role="Encuesta" EntitySet="Encuestas" />
-            <End Role="PreguntasXEncuesta" EntitySet="PreguntasXEncuestas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Usuarios_Grupo" Association="Self.FK_Usuarios_Grupo">
-            <End Role="Grupo" EntitySet="Grupoes" />
-            <End Role="Usuarios" EntitySet="Usuarios" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PreguntasXEncuesta_Preguntas" Association="Self.FK_PreguntasXEncuesta_Preguntas">
-            <End Role="Preguntas" EntitySet="Preguntas" />
-            <End Role="PreguntasXEncuesta" EntitySet="PreguntasXEncuestas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RespuestasXPreguntasXEncuesta_PreguntasXEncuesta" Association="Self.FK_RespuestasXPreguntasXEncuesta_PreguntasXEncuesta">
-            <End Role="PreguntasXEncuesta" EntitySet="PreguntasXEncuestas" />
-            <End Role="RespuestasXPreguntasXEncuesta" EntitySet="RespuestasXPreguntasXEncuestas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RespuestasXPreguntasXEncuesta_Respuestas" Association="Self.FK_RespuestasXPreguntasXEncuesta_Respuestas">
-            <End Role="Respuestas" EntitySet="Respuestas" />
-            <End Role="RespuestasXPreguntasXEncuesta" EntitySet="RespuestasXPreguntasXEncuestas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Subtipo_Tipos" Association="Self.FK_Subtipo_Tipos">
-            <End Role="Tipos" EntitySet="Tipos" />
-            <End Role="Subtipo" EntitySet="Subtipoes" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="EncuestasUPCModelStoreContainer" CdmEntityContainer="EncuestasUPCEntities">
-          <EntitySetMapping Name="Categorias">
-            <EntityTypeMapping TypeName="EncuestasUPCModel.Categoria">
-              <MappingFragment StoreEntitySet="Categorias">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="NombreCategoria" ColumnName="NombreCategoria" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DocumentosDigitales">
-            <EntityTypeMapping TypeName="EncuestasUPCModel.DocumentosDigitale">
-              <MappingFragment StoreEntitySet="DocumentosDigitales">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="TipoId" ColumnName="TipoId" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Encuestas">
-            <EntityTypeMapping TypeName="EncuestasUPCModel.Encuesta">
-              <MappingFragment StoreEntitySet="Encuesta">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="GrupoId" ColumnName="GrupoId" />
-                <ScalarProperty Name="IndicadorId" ColumnName="IndicadorId" />
-                <ScalarProperty Name="DocumentosDigId" ColumnName="DocumentosDigId" />
-                <ScalarProperty Name="SubtipoId" ColumnName="SubtipoId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Grupoes">
-            <EntityTypeMapping TypeName="EncuestasUPCModel.Grupo">
-              <MappingFragment StoreEntitySet="Grupo">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="nombreGrupo" ColumnName="nombreGrupo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Indicadores">
-            <EntityTypeMapping TypeName="EncuestasUPCModel.Indicadore">
-              <MappingFragment StoreEntitySet="Indicadores">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="valorIndicador" ColumnName="valorIndicador" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Preguntas">
-            <EntityTypeMapping TypeName="EncuestasUPCModel.Pregunta">
-              <MappingFragment StoreEntitySet="Preguntas">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PreguntasXEncuestas">
-            <EntityTypeMapping TypeName="EncuestasUPCModel.PreguntasXEncuesta">
-              <MappingFragment StoreEntitySet="PreguntasXEncuesta">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="EncuestaId" ColumnName="EncuestaId" />
-                <ScalarProperty Name="PreguntasId" ColumnName="PreguntasId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Respuestas">
-            <EntityTypeMapping TypeName="EncuestasUPCModel.Respuesta">
-              <MappingFragment StoreEntitySet="Respuestas">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="valorRespuesta" ColumnName="valorRespuesta" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RespuestasXPreguntasXEncuestas">
-            <EntityTypeMapping TypeName="EncuestasUPCModel.RespuestasXPreguntasXEncuesta">
-              <MappingFragment StoreEntitySet="RespuestasXPreguntasXEncuesta">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="PreguntaXEncuestaId" ColumnName="PreguntaXEncuestaId" />
-                <ScalarProperty Name="RespuestaId" ColumnName="RespuestaId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Subtipoes">
             <EntityTypeMapping TypeName="EncuestasUPCModel.Subtipo">
               <MappingFragment StoreEntitySet="Subtipo">
@@ -749,37 +722,124 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Categorias">
+            <EntityTypeMapping TypeName="EncuestasUPCModel.Categoria">
+              <MappingFragment StoreEntitySet="Categorias">
+                <ScalarProperty Name="NombreCategoria" ColumnName="NombreCategoria" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentosDigitales">
+            <EntityTypeMapping TypeName="EncuestasUPCModel.DocumentosDigitale">
+              <MappingFragment StoreEntitySet="DocumentosDigitales">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="TipoId" ColumnName="TipoId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Encuestas">
+            <EntityTypeMapping TypeName="EncuestasUPCModel.Encuesta">
+              <MappingFragment StoreEntitySet="Encuesta">
+                <ScalarProperty Name="SubtipoId" ColumnName="SubtipoId" />
+                <ScalarProperty Name="DocumentosDigId" ColumnName="DocumentosDigId" />
+                <ScalarProperty Name="IndicadorId" ColumnName="IndicadorId" />
+                <ScalarProperty Name="GrupoId" ColumnName="GrupoId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grupoes">
+            <EntityTypeMapping TypeName="EncuestasUPCModel.Grupo">
+              <MappingFragment StoreEntitySet="Grupo">
+                <ScalarProperty Name="nombreGrupo" ColumnName="nombreGrupo" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Indicadores">
+            <EntityTypeMapping TypeName="EncuestasUPCModel.Indicadore">
+              <MappingFragment StoreEntitySet="Indicadores">
+                <ScalarProperty Name="valorIndicador" ColumnName="valorIndicador" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Opciones">
+            <EntityTypeMapping TypeName="EncuestasUPCModel.Opcione">
+              <MappingFragment StoreEntitySet="Opciones">
+                <ScalarProperty Name="IdPregunta" ColumnName="IdPregunta" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Preguntas">
+            <EntityTypeMapping TypeName="EncuestasUPCModel.Pregunta">
+              <MappingFragment StoreEntitySet="Preguntas">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PreguntasXEncuestas">
+            <EntityTypeMapping TypeName="EncuestasUPCModel.PreguntasXEncuesta">
+              <MappingFragment StoreEntitySet="PreguntasXEncuesta">
+                <ScalarProperty Name="PreguntasId" ColumnName="PreguntasId" />
+                <ScalarProperty Name="EncuestaId" ColumnName="EncuestaId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Respuestas">
+            <EntityTypeMapping TypeName="EncuestasUPCModel.Respuesta">
+              <MappingFragment StoreEntitySet="Respuestas">
+                <ScalarProperty Name="valorRespuesta" ColumnName="valorRespuesta" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RespuestasXPreguntasXEncuestas">
+            <EntityTypeMapping TypeName="EncuestasUPCModel.RespuestasXPreguntasXEncuesta">
+              <MappingFragment StoreEntitySet="RespuestasXPreguntasXEncuesta">
+                <ScalarProperty Name="RespuestaId" ColumnName="RespuestaId" />
+                <ScalarProperty Name="PreguntaXEncuestaId" ColumnName="PreguntaXEncuestaId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TipoDocumentoDigitals">
             <EntityTypeMapping TypeName="EncuestasUPCModel.TipoDocumentoDigital">
               <MappingFragment StoreEntitySet="TipoDocumentoDigital">
-                <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="NombreTipoDoc" ColumnName="NombreTipoDoc" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Tipos">
             <EntityTypeMapping TypeName="EncuestasUPCModel.Tipos">
               <MappingFragment StoreEntitySet="Tipos">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="NombreTipo" ColumnName="NombreTipo" />
                 <ScalarProperty Name="CategoriaId" ColumnName="CategoriaId" />
+                <ScalarProperty Name="NombreTipo" ColumnName="NombreTipo" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Usuarios">
             <EntityTypeMapping TypeName="EncuestasUPCModel.Usuario">
               <MappingFragment StoreEntitySet="Usuarios">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="codigo" ColumnName="codigo" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="GrupoId" ColumnName="GrupoId" />
-                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
-                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
                 <ScalarProperty Name="contraseña" ColumnName="contraseña" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="GrupoId" ColumnName="GrupoId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

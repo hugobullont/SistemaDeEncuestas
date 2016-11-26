@@ -25,16 +25,17 @@ namespace EncuestasWeb.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Subtipo> Subtipoes { get; set; }
         public virtual DbSet<Categoria> Categorias { get; set; }
         public virtual DbSet<DocumentosDigitale> DocumentosDigitales { get; set; }
         public virtual DbSet<Encuesta> Encuestas { get; set; }
         public virtual DbSet<Grupo> Grupoes { get; set; }
         public virtual DbSet<Indicadore> Indicadores { get; set; }
+        public virtual DbSet<Opcione> Opciones { get; set; }
         public virtual DbSet<Pregunta> Preguntas { get; set; }
         public virtual DbSet<PreguntasXEncuesta> PreguntasXEncuestas { get; set; }
         public virtual DbSet<Respuesta> Respuestas { get; set; }
         public virtual DbSet<RespuestasXPreguntasXEncuesta> RespuestasXPreguntasXEncuestas { get; set; }
-        public virtual DbSet<Subtipo> Subtipoes { get; set; }
         public virtual DbSet<TipoDocumentoDigital> TipoDocumentoDigitals { get; set; }
         public virtual DbSet<Tipos> Tipos { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
