@@ -19,6 +19,30 @@ namespace EncuestasWeb.Controllers
 
             return View();
         }
+        public ActionResult Analista()
+        {
+            return View();
+        }
+
+        public ActionResult Administrador()
+        {
+            return View();
+        }
+
+        public ActionResult Docente()
+        {
+            return View();
+        }
+
+        public ActionResult Alumno()
+        {
+            return View();
+        }
+
+        public ActionResult Administrativo()
+        {
+            return View();
+        }
 
         public ActionResult Contact()
         {

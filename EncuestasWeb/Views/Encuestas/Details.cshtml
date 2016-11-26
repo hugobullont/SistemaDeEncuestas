@@ -1,0 +1,50 @@
+﻿@model EncuestasWeb.Models.Encuesta
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Encuesta</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentosDigitale.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocumentosDigitale.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Grupo.nombreGrupo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Grupo.nombreGrupo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Indicadore.valorIndicador)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Indicadore.valorIndicador)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subtipo.NombreSubtipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subtipo.NombreSubtipo)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

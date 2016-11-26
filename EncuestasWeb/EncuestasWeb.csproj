@@ -199,8 +199,13 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CategoriasController.cs" />
+    <Compile Include="Controllers\DocumentosDigitalesController.cs" />
+    <Compile Include="Controllers\EncuestasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IndicadoresController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SubtipoesController.cs" />
+    <Compile Include="Controllers\TipoDocumentoDigitalsController.cs" />
     <Compile Include="Controllers\TiposController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">
@@ -357,6 +362,31 @@
     <Content Include="Views\Tipos\Edit.cshtml" />
     <Content Include="Views\Tipos\Index.cshtml" />
     <Content Include="Views\Usuarios\Login.cshtml" />
+    <Content Include="Views\Subtipoes\Create.cshtml" />
+    <Content Include="Views\Subtipoes\Details.cshtml" />
+    <Content Include="Views\Subtipoes\Index.cshtml" />
+    <Content Include="Views\Indicadores\Create.cshtml" />
+    <Content Include="Views\Indicadores\Delete.cshtml" />
+    <Content Include="Views\Indicadores\Details.cshtml" />
+    <Content Include="Views\Indicadores\Edit.cshtml" />
+    <Content Include="Views\Indicadores\Index.cshtml" />
+    <Content Include="Views\Encuestas\Create.cshtml" />
+    <Content Include="Views\Encuestas\Delete.cshtml" />
+    <Content Include="Views\Encuestas\Details.cshtml" />
+    <Content Include="Views\Encuestas\Edit.cshtml" />
+    <Content Include="Views\Encuestas\Index.cshtml" />
+    <Content Include="Views\TipoDocumentoDigitals\Create.cshtml" />
+    <Content Include="Views\TipoDocumentoDigitals\Delete.cshtml" />
+    <Content Include="Views\TipoDocumentoDigitals\Details.cshtml" />
+    <Content Include="Views\TipoDocumentoDigitals\Edit.cshtml" />
+    <Content Include="Views\TipoDocumentoDigitals\Index.cshtml" />
+    <Content Include="Views\DocumentosDigitales\Create.cshtml" />
+    <Content Include="Views\DocumentosDigitales\Delete.cshtml" />
+    <Content Include="Views\DocumentosDigitales\Details.cshtml" />
+    <Content Include="Views\DocumentosDigitales\Edit.cshtml" />
+    <Content Include="Views\DocumentosDigitales\Index.cshtml" />
+    <Content Include="Views\Home\Analista.cshtml" />
+    <Content Include="Views\Home\Administrador.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

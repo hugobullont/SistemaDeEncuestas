@@ -40,15 +40,15 @@ namespace EncuestasWeb.Controllers
                 switch(user.Grupo.nombreGrupo)
                 {
                     case "Analista":
-                        return RedirectToAction("Analista", new { Id = user.Id });
+                        return RedirectToAction("Home/Analista", new { Id = user.Id });
                     case "Administrador":
-                        return RedirectToAction("Administrador", new { Id = user.Id });
+                        return RedirectToAction("Home/Administrador", new { Id = user.Id });
                     case "Alumno":
-                        return RedirectToAction("Alumno", new { Id = user.Id });
+                        return RedirectToAction("Home/Alumno", new { Id = user.Id });
                     case "Docente":
-                        return RedirectToAction("Docente", new { Id = user.Id });
+                        return RedirectToAction("Home/Docente", new { Id = user.Id });
                     case "Administrativo":
-                        return RedirectToAction("Administrativo", new { Id = user.Id });
+                        return RedirectToAction("Home/Administrativo", new { Id = user.Id });
                 }
                           
                 
