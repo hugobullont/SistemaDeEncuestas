@@ -387,6 +387,7 @@
     <Content Include="Views\DocumentosDigitales\Index.cshtml" />
     <Content Include="Views\Home\Analista.cshtml" />
     <Content Include="Views\Home\Administrador.cshtml" />
+    <Content Include="Views\Subtipoes\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
