@@ -239,6 +239,9 @@
       <DependentUpon>EncuestasModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Opcione.cs">
+      <DependentUpon>EncuestasModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Pregunta.cs">
       <DependentUpon>EncuestasModel.tt</DependentUpon>
     </Compile>
@@ -353,10 +356,10 @@
     <Content Include="Views\Tipos\Details.cshtml" />
     <Content Include="Views\Tipos\Edit.cshtml" />
     <Content Include="Views\Tipos\Index.cshtml" />
+    <Content Include="Views\Usuarios\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Usuarios\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
